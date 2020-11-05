@@ -1,8 +1,11 @@
 from transformers import AutoModel, AutoTokenizer
-import torch #torchはサイズでかいからherokuにuploadするときはcpu版をrequirementsで指定する
-import numpy as np
+import torch 
+#torchはサイズでかいからherokuにuploadするときはcpu版をrequirementsで指定する
 #bert-base-japaneseはcl-tohokuを入れないとうまくいかない
 #fugashiが無いとか言われたからインストール->ipadic dictionaryが無いと言われてる pip install ipadicで入れたらとりあえず動いた
+#numpyは重くてherokuの500MB制限に引っかかるからtorchのtensor形式で計算
+#colorlistはheroku側で消されるぽいからリストで読み込ませる
+
 tokenizer = AutoTokenizer.from_pretrained("cl-tohoku/bert-base-japanese-whole-word-masking")
 model = AutoModel.from_pretrained("./DistilBERT-base-jp")
 
@@ -17,15 +20,13 @@ def get_embedding(model, tokenizer, text):
   with torch.no_grad():
       layers, _ = model(tokens_tensor)
   target_layer = -2
-  embedding = layers[0][target_layer].numpy()
+  embedding = layers[0][target_layer]
   return embedding
 
 def getink(s:str):
     color_embedding_list=[]
     
-    f=open("./colorlist.txt",encoding="utf8")
-    sentens=f.readlines()
-    f.close()
+    sentens = ["朝顔","紫陽花","露草","紺碧","天色","月夜","孔雀","深海","松露","深緑","竹林","冬将軍","霧雨","竹炭","躑躅","秋桜","紅葉","紫式部","山葡萄","夕焼け","冬柿","稲穂","土筆","山栗"]
 
     #インクの名前に対応するベクトルリスト生成
     for char in sentens:
@@ -36,7 +37,7 @@ def getink(s:str):
     res=get_embedding(model,tokenizer,s.strip())
     #入力文字列のベクトルとインクの名前のベクトルを比較し最も近いやつをreturn
     for v in color_embedding_list:
-        prod.append(np.linalg.norm(v-res, ord = 2))
-    return sentens[np.array(prod).argmin()].strip()
+        prod.append(torch.norm(v-res))
+    return sentens[int(torch.argmin(torch.tensor(prod)))]
 
-print(getink('焼肉'))
+print(getink("カツオ"))
