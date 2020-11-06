@@ -1,13 +1,17 @@
 <template>
   <div class="container">
-    <div>
-      <textarea v-model="message" placeholder="add multiple lines"></textarea>
-      <InkButton />
-      <button v-on:click="send">言葉を色付ける</button>
-      <div id="result">
-        <div id="result_color" class="result_color">{{ message_color }}</div>
-        <div id="result_message">{{ message }}</div>
-      </div>
+    <div style="width:95%; margin:0 auto; display:block;height:420px;">
+      <span style="display:inline-block;width:45%;height:400px;">
+        <textarea v-model="message" placeholder="add multiple lines"></textarea>
+      </span>
+      <span class="button_container">
+        <InkButton/>
+        <button v-on:click="send">言葉を色付ける</button>
+      </span>
+    </div>
+    <div id="result" class="result_container">
+      <div id="result_color" class="result_color">{{ message_color }}</div>
+      <div id="result_message">{{ message }}</div>
     </div>
   </div>
 </template>
@@ -54,16 +58,34 @@ export default {
 </script>
 
 <style>
+html{
+  background-image:url("~static/background_image.png");
+  background-size:cover;
+  background-color: rgba(255,255,255,0.4);
+  background-blend-mode: lighten;
+}
 .container {
   width:80%;
   margin: 0 auto;
+  padding-top:10vh;
+  padding-bottom:10vh;
   min-height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   text-align: center;
+  background-color: white;
 }
 
+textarea{
+  width:100%;
+  height:100%;
+}
+.button_container{
+  display:inline-block;
+  padding:20px;
+  width:45%;
+}
 button {
   /*
   border:0;
@@ -73,8 +95,14 @@ button {
   background:#abece9;
   color:rgb(17, 65, 71);
   border-radius: 10px;
+  display:block;
+  margin: 0 auto;
 }
-
+.result_container{
+  display:block;
+  width:80%;
+  margin:0 auto;
+}
 .result_color{
   height:40px;
   background: none;
