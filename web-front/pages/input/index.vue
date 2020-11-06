@@ -1,10 +1,9 @@
 <template>
   <div class="container">
-    <Title />
     <div>
-      <a href="/input">
-      <Logo />
-      </a>
+        <textarea v-model="message" placeholder="add multiple lines"></textarea>
+        <InkButton />
+        <button></button>
     </div>
   </div>
 </template>

@@ -1,10 +1,6 @@
 <template>
   <div class="container">
-    <Title />
     <div>
-      <a href="/input">
-      <Logo />
-      </a>
     </div>
   </div>
 </template>
