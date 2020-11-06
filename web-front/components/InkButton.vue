@@ -1,5 +1,5 @@
 <template>
-<img src="inkbutton.png">
+  <img src="inkbutton.png" />
 </template>
 
 <style>
