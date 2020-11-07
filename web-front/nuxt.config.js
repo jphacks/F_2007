@@ -1,3 +1,12 @@
+const routerBase =
+  process.env.DEPLOY_ENV === 'GH_PAGES'
+    ? {
+      router: {
+        base: '/kotonoha-ink/'
+      }
+    }
+    : {}
+
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
@@ -9,7 +18,10 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    ],
+    base: {
+      href: 'router.base'
+    }
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -40,5 +52,10 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-  }
+    publicPath: '/static/',
+    extend(config, ctx) {
+    },
+  },
+  target: 'static',
+  ...routerBase
 }
